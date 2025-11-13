@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Node {
+    char name[50];
+    struct Node *left, *right;
+};
+
+struct Node* newNode(char *name) {
+    struct Node *n = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(n->name, name);
+    n->left = n->right = NULL;
+    return n;
+}
+
+struct Node* insert(struct Node *root, char *name) {
+    if (!root) return newNode(name);
+    if (strcmp(name, root->name) < 0)
+        root->left = insert(root->left, name);
+    else
+        root->right = insert(root->right, name);
+    return root;
+}
+
+void inorder(struct Node *root) {
+    if (root) {
+        inorder(root->left);
+        printf("%s ", root->name);
+        inorder(root->right);
+    }
+}
+
+struct Node* search(struct Node *root, char *name) {
+    if (!root || strcmp(root->name, name) == 0) return root;
+    if (strcmp(name, root->name) < 0)
+        return search(root->left, name);
+    return search(root->right, name);
+}
+
+int main() {
+    struct Node *root = NULL;
+    char name[50];
+    int ch;
+
+    while (1) {
+        printf("\n1.Insert 2.Display(Inorder) 3.Search 4.Exit: ");
+        scanf("%d", &ch);
+        if (ch == 1) {
+            printf("Enter name: ");
+            scanf("%s", name);
+            root = insert(root, name);
+        } else if (ch == 2) {
+            printf("Inorder: ");
+            inorder(root);
+            printf("\n");
+        } else if (ch == 3) {
+            printf("Enter name to search: ");
+            scanf("%s", name);
+            if (search(root, name))
+                printf("Found!\n");
+            else
+                printf("Not Found!\n");
+        } else if (ch == 4)
+            break;
+        else
+            printf("Invalid!\n");
+    }
+}
