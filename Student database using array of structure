@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+void create(struct Student s[], int *n) {
+    printf("Enter number of students: ");
+    scanf("%d", n);
+    for (int i = 0; i < *n; i++) {
+        printf("Enter Roll, Name, Marks: ");
+        scanf("%d %s %f", &s[i].roll, s[i].name, &s[i].marks);
+    }
+}
+
+void display(struct Student s[], int n) {
+    printf("\nRoll\tName\tMarks\n");
+    for (int i = 0; i < n; i++)
+        printf("%d\t%s\t%.2f\n", s[i].roll, s[i].name, s[i].marks);
+}
+
+void search(struct Student s[], int n, int r) {
+    for (int i = 0; i < n; i++)
+        if (s[i].roll == r) {
+            printf("Found: %d %s %.2f\n", s[i].roll, s[i].name, s[i].marks);
+            return;
+        }
+    printf("Record not found.\n");
+}
+
+int main() {
+    struct Student s[50];
+    int n, choice, roll;
+    create(s, &n);
+    while (1) {
+        printf("\n1.Display  2.Search  3.Exit: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: display(s, n); break;
+            case 2: printf("Enter Roll: "); scanf("%d", &roll); search(s, n, roll); break;
+            case 3: return 0;
+        }
+    }
+}
