@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+struct Node *head = NULL;
+
+void insertEnd(int val) {
+    struct Node *n = (struct Node*)malloc(sizeof(struct Node));
+    n->data = val; n->next = NULL;
+    if (!head) head = n;
+    else {
+        struct Node *t = head;
+        while (t->next) t = t->next;
+        t->next = n;
+    }
+}
+
+void deleteFront() {
+    if (!head) printf("List empty\n");
+    else {
+        struct Node *t = head;
+        head = head->next;
+        printf("Deleted %d\n", t->data);
+        free(t);
+    }
+}
+
+void display() {
+    if (!head) { printf("List empty\n"); return; }
+    for (struct Node *t = head; t; t = t->next)
+        printf("%d -> ", t->data);
+    printf("NULL\n");
+}
+
+int main() {
+    int ch, val;
+    while (1) {
+        printf("\n1.Insert 2.Delete 3.Display 4.Exit: ");
+        scanf("%d", &ch);
+        if (ch == 1) { printf("Value: "); scanf("%d", &val); insertEnd(val); }
+        else if (ch == 2) deleteFront();
+        else if (ch == 3) display();
+        else if (ch == 4) break;
+        else printf("Invalid!\n");
+    }
+}
